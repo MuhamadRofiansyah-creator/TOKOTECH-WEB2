@@ -39,3 +39,39 @@ export type CheckoutDefaults = {
   email: string
   address: CheckoutAddress | null
 }
+export async function getCheckoutDefaultsAction(): Promise<CheckoutDefaults> {
+    const user = await getSessionUser()
+    if (!user) {
+  return {
+    signedIn: false,
+    email: "",
+    address: null,
+  }
+}
+const a = await db.address.findFirst({
+  where: { userId: user.id },
+  orderBy: [
+    { isDefault: "desc" },
+    { createdAt: "asc" },
+  ],
+})
+return {
+  signedIn: true,
+  email: user.email ?? "",
+  address: a
+    ? {
+        recipient: a.recipient,
+        phone: a.phone,
+        street: a.street,
+        district: a.district,
+        city: a.city,
+        province: a.province,
+        postalCode: a.postalCode,
+        notes: a.notes,
+        areaId: a.areaId,
+        latitude: a.latitude,
+        longitude: a.longitude,
+      }
+    : null,
+}
+}
