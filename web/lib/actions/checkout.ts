@@ -26,3 +26,10 @@ import type { PaymentMethod } from "@/lib/types"
 
 const appUrl = () =>
   process.env.APP_URL ?? "http://localhost:3000"
+
+const METHODS: PaymentMethod[] = [
+  "QRIS",
+  "VIRTUAL_ACCOUNT",
+  "CREDIT_CARD",
+  "EWALLET",
+]
