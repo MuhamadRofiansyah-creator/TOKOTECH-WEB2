@@ -44,3 +44,40 @@ try {
   }
   throw e
 }
+
+export async function registerAction(_prev: AuthState, form: FormData): Promise<AuthState> {
+    const name = String(form.get("name") ?? "").trim()
+const email = String(form.get("email") ?? "").trim().toLowerCase()
+const password = String(form.get("password") ?? "")
+if (name.length < 2 || name.length > 80)
+  fieldErrors.name = "Enter your full name"
+
+if (!EMAIL.test(email) || email.length > 254)
+  fieldErrors.email = "Enter a valid email address"
+
+if (password.length < 8 || password.length > 128)
+  fieldErrors.password = "Password must be at least 8 characters"
+
+if (!form.get("terms"))
+  fieldErrors.terms = "Please accept the terms to continue"
+const existing = await db.user.findUnique({
+  where: { email },
+  select: { id: true, status: true }
+})
+if (existing?.status === "INVITED") {
+
+    const user = await db.user.create({
+  data: {
+    name,
+    email,
+    passwordHash: await bcrypt.hash(password, 10),
+    lastActiveAt: new Date()
+  }
+})
+await claimGuestOrders(userId, email)
+
+await signIn("credentials", {
+  email,
+  password,
+  redirectTo: safeNext(form.get("next"))
+})
