@@ -82,3 +82,20 @@ export type RateOption = {
   price: number
   cost: number
 }
+export async function quoteShippingAction(
+  postalCode: string
+): Promise<{ rates: RateOption[]; error?: string }> {
+    if (!/^\d{5}$/.test(postalCode)) {
+  return {
+    rates: [],
+    error: "Enter a 5-digit postal code",
+  }
+}
+const cart = await currentCart()
+if (!cart) {
+  return {
+    rates: [],
+    error: "Your cart is empty",
+  }
+}
+const lines = await priceCart(cart.id)
