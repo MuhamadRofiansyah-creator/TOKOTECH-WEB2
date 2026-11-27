@@ -72,10 +72,10 @@ export async function syncWishlistAction(localIds: string[]): Promise<string[] |
   const ids = (Array.isArray(localIds) ? localIds : []).filter(isId).slice(0, 200)
   if (ids.length) {
     const live = await db.product.findMany({ where: { id: { in: ids } }, select: { id: true } })
-    await db.wishlistItem.createMany({ data: live.map((p: { id: string }) => ({ userId: user.id, productId: p.id })), skipDuplicates: true })
+    await db.wishlistItem.createMany({ data: live.map((p) => ({ userId: user.id, productId: p.id })), skipDuplicates: true })
   }
   const rows = await db.wishlistItem.findMany({ where: { userId: user.id }, orderBy: { createdAt: "asc" }, select: { productId: true } })
-  return rows.map((r: { productId: string }) => r.productId)
+  return rows.map((r) => r.productId)
 }
 
 export async function setWishlistedAction(productId: string, on: boolean): Promise<void> {
