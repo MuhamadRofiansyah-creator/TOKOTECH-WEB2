@@ -99,3 +99,24 @@ if (!cart) {
   }
 }
 const lines = await priceCart(cart.id)
+if (!lines.length) {
+  return {
+    rates: [],
+    error: "Your cart is empty",
+  }
+}
+const options = await shippingOptions(lines, {
+  postalCode,
+})
+return {
+  rates: options.map(
+    ({ id, label, eta, price, cost }) => ({
+      id,
+      label,
+      eta,
+      price,
+      cost,
+    })
+  ),
+}
+}
