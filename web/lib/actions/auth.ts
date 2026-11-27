@@ -81,3 +81,9 @@ await signIn("credentials", {
   password,
   redirectTo: safeNext(form.get("next"))
 })
+
+export async function googleSignInAction(form: FormData) {
+  await signIn("google", {
+    redirectTo: safeNext(form.get("next"))
+  })
+}
