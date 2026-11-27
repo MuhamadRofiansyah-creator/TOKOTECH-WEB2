@@ -9,3 +9,9 @@ export type AuthState = {
   error?: string;
   fieldErrors?: Record<string, string>
 } | undefined
+
+function safeNext(value: FormDataEntryValue | null, fallback = "/account") {
+  const v = typeof value === "string" ? value : ""
+  return v.startsWith("/") && !v.startsWith("//") && !v.startsWith("/\\") ? v : fallback
+}
+
