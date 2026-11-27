@@ -75,3 +75,10 @@ return {
     : null,
 }
 }
+export type RateOption = {
+  id: string
+  label: string
+  eta: string
+  price: number
+  cost: number
+}
