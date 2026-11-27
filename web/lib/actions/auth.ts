@@ -87,3 +87,6 @@ export async function googleSignInAction(form: FormData) {
     redirectTo: safeNext(form.get("next"))
   })
 }
+export async function signOutAction() {
+  await signOut({ redirectTo: "/" })
+}
