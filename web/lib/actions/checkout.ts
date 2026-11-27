@@ -178,3 +178,12 @@ export type PlaceOrderResult =
       error?: string
       fieldErrors?: Record<string, string>
     }
+    
+export async function placeOrderAction(input: {
+  email?: string
+  address: Partial<CheckoutAddress>
+  rateId: string
+  method: PaymentMethod
+  voucherCode?: string | null
+  saveAddress?: boolean
+}): Promise<PlaceOrderResult> {
