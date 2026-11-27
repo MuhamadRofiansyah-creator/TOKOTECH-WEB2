@@ -23,6 +23,7 @@ import {
   sendOrderPlaced,
 } from "@/lib/email"
 import type { PaymentMethod } from "@/lib/types"
+import error from "@/app/[lang]/(shop)/error"
 
 const appUrl = () =>
   process.env.APP_URL ?? "http://localhost:3000"
@@ -170,3 +171,10 @@ return {
   errors,
 }
 }
+export type PlaceOrderResult =
+  | { ok: true; redirect: string }
+  | {
+      ok: false
+      error?: string
+      fieldErrors?: Record<string, string>
+    }
