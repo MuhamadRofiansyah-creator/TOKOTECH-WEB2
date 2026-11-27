@@ -33,3 +33,9 @@ const METHODS: PaymentMethod[] = [
   "CREDIT_CARD",
   "EWALLET",
 ]
+const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+export type CheckoutDefaults = {
+  signedIn: boolean
+  email: string
+  address: CheckoutAddress | null
+}
